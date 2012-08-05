@@ -5,6 +5,11 @@
 /// </summary>
 public class DoubleProjectileShooter : WeaponBase
 {
+    public DoubleProjectileShooter()
+    {
+        WeaponBaseSpeed = 4.0f;
+    }
+
     public override void Fire(GameObject ammo, GameObject origin)
     {
         // Create the two projectiles on the front of the ship, on two sides, based on the origin object(ship).

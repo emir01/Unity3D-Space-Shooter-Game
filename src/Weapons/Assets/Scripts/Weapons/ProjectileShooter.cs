@@ -5,11 +5,17 @@ using UnityEngine;
 /// </summary>
 public class ProjectileShooter : WeaponBase
 {
-        public override void Fire(GameObject ammo, GameObject origin)
+    public ProjectileShooter()
+    {
+        // Set projectile shooter properties here
+        WeaponBaseSpeed = 0.5f;
+    }
+    
+    public override void Fire(GameObject ammo, GameObject origin)
     {
         // Create the projectile on the front center of the ship based on the origin object(ship).
 
-        Instantiate(ammo, new Vector3()
+        var firedAmmo = Instantiate(ammo, new Vector3()
                               {
                                   x = origin.transform.position.x,
                                   y = origin.transform.position.y + (origin.transform.localScale.y / 2),

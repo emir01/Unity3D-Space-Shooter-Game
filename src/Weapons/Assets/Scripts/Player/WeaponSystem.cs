@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -13,6 +14,16 @@ public class WeaponSystem : MonoBehaviour
 
     // The current loaded ammo type
     public GameObject LoadedAmmo;
+
+    /// <summary>
+    ///  Used to control if the player can fire the weapon based on the weapon rate of fire.
+    /// </summary>
+    private bool canFire = true;
+
+    /// <summary>
+    /// Used to control if the player can switch weapons.
+    /// </summary>
+    private bool canSwitchWeapon = true;
 
     #endregion
 
@@ -30,11 +41,9 @@ public class WeaponSystem : MonoBehaviour
         HandleWeaponSwitch();
         
         // Handle fire user input
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown("space") && canFire)
         {
-            // Call the Current Weapon Fire method with the loaded ammo and the 
-            // game object to which the weapon system is atached to ( player ship )
-            CurrentWeapon.Fire(LoadedAmmo,gameObject);       
+            StartCoroutine(FireWeaponSystem());
         }
     }
 
@@ -50,6 +59,20 @@ public class WeaponSystem : MonoBehaviour
         {
             CurrentWeapon = ScriptableObject.CreateInstance(typeof(DoubleProjectileShooter)) as WeaponBase;
         }
+    }
+
+    private IEnumerator FireWeaponSystem()
+    {
+        // Call the Current Weapon Fire method with the loaded ammo and the 
+        // game object to which the weapon system is atached to ( player ship )
+        CurrentWeapon.Fire(LoadedAmmo, gameObject);
+        canFire = false;
+
+        var timeToNextFire = CurrentWeapon.WeaponBaseSpeed;
+
+        yield return new WaitForSeconds(timeToNextFire);
+
+        canFire = true;
     }
 
     #endregion

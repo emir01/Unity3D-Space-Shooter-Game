@@ -12,13 +12,29 @@ public class AmmoBase:MonoBehaviour
     public float Speed;
 
     // The Rate of fire modifier for the Weapon it is fired from.
-    public float RateOfFireModifier = 1.0f;
+    // 2 means it fires 2 times faster.
+    public float WeaponRateOfFireModifier = 1.0f;
+
+    void Awake()
+    {
+        gameObject.AddComponent(typeof (Rigidbody));
+        rigidbody.isKinematic = false;
+        rigidbody.useGravity = false;
+    }
 
     void Update()
     {
         // Calculate the movement based on delta time  and move the ammo upwards
         var ammountToMove = Time.deltaTime*Speed;
         transform.Translate(Vector3.up * ammountToMove,Space.World);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "enemy")
+        {
+            Debug.Log("Hit enemy for " + Damage + " damage");
+        }
     }
 }
 

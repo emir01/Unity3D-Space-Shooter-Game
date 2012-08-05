@@ -39,7 +39,7 @@ public class WeaponSystem : MonoBehaviour
     {
         // See if user has switched weapons
         HandleWeaponSwitch();
-        
+
         // Handle fire user input
         if (Input.GetKeyDown("space") && canFire)
         {
@@ -49,27 +49,42 @@ public class WeaponSystem : MonoBehaviour
 
     private void HandleWeaponSwitch()
     {
-        // Switch Weapons
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (canSwitchWeapon)
         {
-            CurrentWeapon = ScriptableObject.CreateInstance(typeof(ProjectileShooter)) as WeaponBase;
-        }
+            // Switch Weapons
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                CurrentWeapon = ScriptableObject.CreateInstance(typeof(ProjectileShooter)) as WeaponBase;
+            }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            CurrentWeapon = ScriptableObject.CreateInstance(typeof(DoubleProjectileShooter)) as WeaponBase;
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                CurrentWeapon = ScriptableObject.CreateInstance(typeof(DoubleProjectileShooter)) as WeaponBase;
+            }
         }
     }
 
+    /// <summary>
+    /// The actual method that handles the shooting of the currently selected weapon 
+    /// with the currently selected ammo
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator FireWeaponSystem()
     {
         // Call the Current Weapon Fire method with the loaded ammo and the 
         // game object to which the weapon system is atached to ( player ship )
+        
+        // Calculate modifiers for the Weapon rate of fire : 
+        var baseAmmo = (AmmoBase)LoadedAmmo.GetComponent(typeof(AmmoBase));
+        
+        // Get the modifiers from the weapon
+        var rateOfFireModifier = baseAmmo.WeaponRateOfFireModifier;
+        
         CurrentWeapon.Fire(LoadedAmmo, gameObject);
+        
         canFire = false;
 
-        var timeToNextFire = CurrentWeapon.WeaponBaseSpeed;
-
+        var timeToNextFire = CurrentWeapon.RateOfFire / rateOfFireModifier;
         yield return new WaitForSeconds(timeToNextFire);
 
         canFire = true;

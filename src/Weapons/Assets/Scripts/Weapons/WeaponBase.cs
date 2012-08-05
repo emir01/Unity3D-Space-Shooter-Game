@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// The base weapon abstract weapon system  class.
 /// </summary>
-public abstract class WeaponBase : ScriptableObject
+public abstract class WeaponBase : MonoBehaviour
 {
     #region Weapon Base Properties
 

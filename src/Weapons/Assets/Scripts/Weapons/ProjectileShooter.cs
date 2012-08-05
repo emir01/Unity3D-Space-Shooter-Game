@@ -10,7 +10,7 @@ public class ProjectileShooter : WeaponBase
         // Set projectile shooter properties here
         RateOfFire = 0.5f;
     }
-    
+
     public override void Fire(GameObject ammo, GameObject origin)
     {
         // Create the projectile on the front center of the ship based on the origin object(ship).

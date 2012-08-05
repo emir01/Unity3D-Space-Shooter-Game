@@ -10,10 +10,13 @@ public class WeaponSystem : MonoBehaviour
     #region Properties
 
     // The current  active Weapon
-    public WeaponBase CurrentWeapon;
+    public GameObject CurrentWeapon;
 
     // The current loaded ammo type
     public GameObject LoadedAmmo;
+
+    // Reference to the player game object for calculating firing mechanisims.
+    public GameObject Player;
 
     /// <summary>
     ///  Used to control if the player can fire the weapon based on the weapon rate of fire.
@@ -31,8 +34,8 @@ public class WeaponSystem : MonoBehaviour
 
     void Start()
     {
-        // Set the current weapon to the Simple Projectile Shooter
-        CurrentWeapon = ScriptableObject.CreateInstance(typeof(ProjectileShooter)) as WeaponBase;
+        CurrentWeapon = transform.GetChild(0).gameObject;
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Update()
@@ -54,14 +57,21 @@ public class WeaponSystem : MonoBehaviour
             // Switch Weapons
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                CurrentWeapon = ScriptableObject.CreateInstance(typeof(ProjectileShooter)) as WeaponBase;
+                ChangeWeapon("ProjectileShooter");
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                CurrentWeapon = ScriptableObject.CreateInstance(typeof(DoubleProjectileShooter)) as WeaponBase;
+                ChangeWeapon("DoubleProjectileShooter");
             }
         }
+    }
+
+    private void ChangeWeapon(string weaponName)
+    {
+        Destroy(CurrentWeapon);
+        CurrentWeapon = (GameObject)Instantiate(Resources.Load(weaponName), transform.position, transform.rotation);
+        CurrentWeapon.transform.parent = gameObject.transform;
     }
 
     /// <summary>
@@ -76,15 +86,16 @@ public class WeaponSystem : MonoBehaviour
         
         // Calculate modifiers for the Weapon rate of fire : 
         var baseAmmo = (AmmoBase)LoadedAmmo.GetComponent(typeof(AmmoBase));
+        var weapon = (WeaponBase) CurrentWeapon.GetComponent(typeof (WeaponBase));
         
         // Get the modifiers from the weapon
         var rateOfFireModifier = baseAmmo.WeaponRateOfFireModifier;
         
-        CurrentWeapon.Fire(LoadedAmmo, gameObject);
+        weapon.Fire(LoadedAmmo, Player);
         
         canFire = false;
 
-        var timeToNextFire = CurrentWeapon.RateOfFire / rateOfFireModifier;
+        var timeToNextFire = weapon.RateOfFire / rateOfFireModifier;
         yield return new WaitForSeconds(timeToNextFire);
 
         canFire = true;

@@ -20,7 +20,6 @@ public class WeaponSystem : MonoBehaviour
 
     public GameObject DefaultWeapon;
     
-
     /// <summary>
     ///  Used to control if the player can fire the weapon based on the weapon rate of fire.
     /// </summary>

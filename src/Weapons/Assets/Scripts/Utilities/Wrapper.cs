@@ -26,7 +26,7 @@ public class Wrapper : MonoBehaviour
 
         // get the object half width used in the off screen calculation
         var transformHalfWidth = transform.localScale.x/2;
-        
+
         // if the object leaves the right edge, considering the wrap tolerance.
         if (transform.position.x > rightEdgePosition.x + (transformHalfWidth -wrapTolerance))
         {

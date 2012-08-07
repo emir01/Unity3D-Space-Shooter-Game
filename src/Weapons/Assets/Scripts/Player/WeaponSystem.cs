@@ -10,13 +10,16 @@ public class WeaponSystem : MonoBehaviour
     #region Properties
 
     // The current  active Weapon
-    public GameObject CurrentWeapon;
+    private GameObject CurrentWeapon;
 
     // The current loaded ammo type
     public GameObject LoadedAmmo;
 
     // Reference to the player game object for calculating firing mechanisims.
-    public GameObject Player;
+    private GameObject Player;
+
+    public GameObject DefaultWeapon;
+    
 
     /// <summary>
     ///  Used to control if the player can fire the weapon based on the weapon rate of fire.
@@ -34,7 +37,7 @@ public class WeaponSystem : MonoBehaviour
 
     void Start()
     {
-        CurrentWeapon = transform.GetChild(0).gameObject;
+        ChangeWeapon(DefaultWeapon.name);
         Player = GameObject.FindGameObjectWithTag("Player");
     }
 

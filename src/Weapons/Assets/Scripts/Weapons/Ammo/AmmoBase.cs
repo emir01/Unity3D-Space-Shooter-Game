@@ -3,7 +3,7 @@
 /// <summary>
 /// The Ammo base script atached to Ammo prefabs, that currenly only handles ammo movement.
 /// </summary>
-public class AmmoBase:MonoBehaviour
+public class AmmoBase : MonoBehaviour
 {
     // The damage the ammo will do to objects it hits
     public float Damage;
@@ -17,7 +17,7 @@ public class AmmoBase:MonoBehaviour
 
     void Awake()
     {
-        gameObject.AddComponent(typeof (Rigidbody));
+        gameObject.AddComponent(typeof(Rigidbody));
         rigidbody.isKinematic = false;
         rigidbody.useGravity = false;
     }
@@ -25,15 +25,18 @@ public class AmmoBase:MonoBehaviour
     void Update()
     {
         // Calculate the movement based on delta time  and move the ammo upwards
-        var ammountToMove = Time.deltaTime*Speed;
-        transform.Translate(Vector3.up * ammountToMove,Space.World);
+        var ammountToMove = Time.deltaTime * Speed;
+        transform.Translate(Vector3.up * ammountToMove, Space.World);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "enemy")
         {
-            Debug.Log("Hit enemy for " + Damage + " damage");
+            var enemy = other.gameObject.GetComponent<BaseEnemy>();
+            enemy.BaseHealth = (int)(enemy.BaseHealth - Damage);
+            Destroy(this.gameObject); // Destroy the projectile
+
         }
     }
 }

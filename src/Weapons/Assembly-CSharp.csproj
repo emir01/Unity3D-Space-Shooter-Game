@@ -47,6 +47,7 @@
      <Compile Include="Assets\Scripts\Enemies\BaseEnemy.cs" />
      <Compile Include="Assets\Scripts\Enemies\BaseEnemyAI.cs" />
      <Compile Include="Assets\Scripts\GUI\GuiEnemyHP.cs" />
+     <Compile Include="Assets\Scripts\GUI\GuiSelectedLoadout.cs" />
      <Compile Include="Assets\Scripts\Player\Controller.cs" />
      <Compile Include="Assets\Scripts\Player\WeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Utilities\RemoveOffScreen.cs" />
